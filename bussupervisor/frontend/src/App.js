@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useRef} from "react";
+import BuslinienList from "./BuslinienList";
 
 function App() {
+  const [buslinien, setBuslinien] = useState([{name: '370', haltestellen:['sehnde', 'rethmar']}])
+  const buslinienNameRef = useRef()
+
+function handleAddBuslinie(e){
+  const name = buslinienNameRef.current.value
+
+  setBuslinien(prevBuslinien =>{
+    return [...prevBuslinien,{name: name, haltestellen: []}]
+  })
+  buslinienNameRef.current.value = null
+  
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <button>Mitarbeitersicht</button>
+    <button>Kundensicht</button>
+    <input ref={buslinienNameRef} type= "text"/>
+    <button onClick={handleAddBuslinie}>Buslinie hinzufügen</button>
+    <BuslinienList buslinien={buslinien} />
+    
+    </>
   );
 }
 
