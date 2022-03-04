@@ -1,10 +1,22 @@
-INSERT INTO
+INSERT IGNORE INTO
     T_BUSLINIE (
         NAME
     )
 values
     (
         'S5'
+    );
+
+INSERT IGNORE INTO
+    T_HALTESTELLE (
+        NAME
+    )
+VALUES
+    (
+        'Hannover HBF'
+    ),
+    (
+        'Hildesheim HBF'
     );
 
 INSERT INTO
@@ -24,14 +36,3 @@ VALUES
         '2008-11-11 14:23:44'
     );
 
-INSERT INTO
-    T_HALTESTELLE (
-        NAME
-    )
-VALUES
-    (
-        'Hannover HBF'
-    ),
-    (
-        'Hildesheim HBF'
-    );

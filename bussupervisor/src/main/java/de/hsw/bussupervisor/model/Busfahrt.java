@@ -28,10 +28,12 @@ public class Busfahrt {
     @ManyToOne
     private Haltestelle zielHaltestelle;
 
-    @Column
+    @Column  
+    @JoinColumn(name = "ANKUNFTS_ZEIT", nullable = false)
     private java.sql.Timestamp ankuftszeit;
 
     @Column
+    @JoinColumn(name = "ABFAHRTS_ZEIT", nullable = false)
     private java.sql.Timestamp abfahrtszeit;
 }
     
