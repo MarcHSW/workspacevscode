@@ -1,11 +1,11 @@
 package de.hsw.bussupervisor.model;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,28 +13,27 @@ import javax.persistence.Table;
 
 public class Busfahrt {
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @JoinColumn(name = "BUSLINIE_ID", nullable = false)
-    @ManyToOne
-    private Buslinie buslinie;
+    @Column
+    @JoinColumn(name = "BUSLINIE_NAME", nullable = false)
+    private String buslinieName;
 
-    @JoinColumn(name = "START_HALTESTELLE_ID", nullable = false)
-    @ManyToOne
-    private Haltestelle startHaltestelle;
+    @Column
+    @JoinColumn(name = "START_HALTESTELLE_NAME", nullable = false)
+    private String startHaltestelle;
 
-    @JoinColumn(name = "ZIEL_HALTESTELLE_ID", nullable = false)
-    @ManyToOne
-    private Haltestelle zielHaltestelle;
+    @Column
+    @JoinColumn(name = "ZIEL_HALTESTELLE_NAME", nullable = false)
+    private String zielHaltestelle;
 
-    @Column  
+    @Column
     @JoinColumn(name = "ANKUNFTS_ZEIT", nullable = false)
-    private java.sql.Timestamp ankuftszeit;
+    private java.sql.Timestamp ANKUNFTS_ZEIT;
 
     @Column
     @JoinColumn(name = "ABFAHRTS_ZEIT", nullable = false)
-    private java.sql.Timestamp abfahrtszeit;
+    private java.sql.Timestamp ABFAHRTS_ZEIT;
 }
-    
-

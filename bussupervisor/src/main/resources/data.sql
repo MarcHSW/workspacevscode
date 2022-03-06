@@ -13,25 +13,25 @@ INSERT IGNORE INTO
     )
 VALUES
     (
-        'Hannover HBF'
+        'HannoverHBF'
     ),
     (
-        'Hildesheim HBF'
+        'HildesheimHBF'
     );
 
 INSERT INTO
     T_BUSFAHRT (
-        BUSLINIE_ID,
-        START_HALTESTELLE_ID,
-        ZIEL_HALTESTELLE_ID,
+        BUSLINIE_NAME,
+        START_HALTESTELLE,
+        ZIEL_HALTESTELLE,
         ABFAHRTS_ZEIT,
         ANKUNFTS_ZEIT
     )
 VALUES
     (
-        1,
-        1,
-        2,
+        'S5',
+        'HannoverHBF',
+        'HildesheimHBF',
         '2008-11-11 13:23:44',
         '2008-11-11 14:23:44'
     );

@@ -10,10 +10,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "T_BUSLINIE")
 public class Buslinie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
+    @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String name;
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 }
