@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Table from './Table';
+import axios from "axios";
 
 let columns = [
   {
@@ -14,10 +15,11 @@ let columns = [
 
 
 
-function App() {
+function Buslinien() {
   const [buslinien, setBuslinien] = useState([
-    { name: "370", haltestellen: ["sehnde", "rethmar"] },
+    { name: "370", haltestellen: ["sehnde", "rethmar"] }
   ]);
+
   const buslinienNameRef = useRef();
 
   function handleAddBuslinie(e) {
@@ -29,19 +31,25 @@ function App() {
     buslinienNameRef.current.value = null;
   }
 
-  return (
-    <>
-      <button>Mitarbeitersicht</button>
-      <button>Kundensicht</button>
-      <input ref={buslinienNameRef} type="text" />
-      <button onClick={handleAddBuslinie}>Buslinie hinzufügen</button>
-      <Table
-          columns={columns}
-          data={buslinien}
-          propertyAsKey='name' //The data property to be used as a key
-        />
-    </>
-  );
+  const fetchBuslinien = () => {
+    axios.get("http://localhost:8080/bussupervisor/get/HannoverHBF").then(res => {
+      console.log(res);
+      setBuslinien(res.data);
+    })
+  }
+
+  useEffect(() => {
+    fetchBuslinien();
+  }, [])
+
+  return buslinien.map((buslinien, index) => {
+    return (<div key={index}>
+      <h1>{buslinien.name}</h1>
+      <p>{buslinien.haltestellen}</p>
+    </div>)
+  }) 
+ 
 }
 
-export default App;
+
+export default Buslinien;
