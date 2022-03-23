@@ -3,10 +3,13 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import de.hsw.bussupervisor.model.Buslinie;
@@ -30,9 +33,21 @@ public class BussupervisorController {
         return bussupervisorService.getBuslinieFromHaltestelle(haltestelleName);
     }
 
-    @PostMapping
-    public void registerNewStudent(@RequestBody Haltestelle haltestelle) {
+    // @PostMapping
+    // public void registerNewStudent(@RequestBody Haltestelle haltestelle) {
+    // bussupervisorService.addNewHaltestelle(haltestelle);
+    // }
+
+    @PostMapping(path ="/addHaltestelle")
+    public void addHaltestelle(@RequestBody Haltestelle haltestelle) {
     bussupervisorService.addNewHaltestelle(haltestelle);
+   
+    }
+
+    @PostMapping(path ="/addBuslinie")
+    public void addHaltestelle(@RequestBody Buslinie buslinie) {
+    bussupervisorService.addNewBuslinie(buslinie);
+   
     }
 
     // @DeleteMapping(path = "{studentID}")
@@ -40,10 +55,14 @@ public class BussupervisorController {
     // studentService.deleteStudent(id);
     // }
 
-    // @PutMapping(path = "{studentId}")
-    // public void updateStudent(@PathVariable("studentId") Long studentId,
-    // @RequestParam(required = false) String name,
-    // @RequestParam(required = false) String email) {
-    // studentService.updateStudent(studentId, name, email);
-    // }
+    @PutMapping(path = "/changeBuslinieName/{buslinieName}")
+    public void updateBuslinieName(@PathVariable("buslinieName") String buslinieName,
+    @RequestParam(required = true) String updatedName) {
+        bussupervisorService.updateBuslinie(buslinieName, updatedName);
+    }
+    @PutMapping(path = "/changeHaltestelleName/{haltestelleName}")
+    public void updateHaltestelleName(@PathVariable("haltestelleName") String haltestelleName,
+    @RequestParam(required = true) String updatedName) {
+        bussupervisorService.updateHaltestelle(haltestelleName, updatedName);
+    }
 }

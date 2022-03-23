@@ -11,7 +11,7 @@ import de.hsw.bussupervisor.model.Haltestelle;
 @Repository
 public interface HaltestellenRepository extends JpaRepository<Haltestelle, Integer> {
 
-    @Query(value ="SELECT NAME FROM Haltestelle WHERE NAME=?1", nativeQuery = true)
+    @Query(value ="SELECT HALTESTELLE_NAME FROM T_Haltestelle WHERE HALTESTELLE_NAME=?1", nativeQuery = true)
     Optional<Haltestelle> findHaltestelleByName(String name);
 
 }

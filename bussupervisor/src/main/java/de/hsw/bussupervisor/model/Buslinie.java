@@ -13,13 +13,23 @@ public class Buslinie {
 
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String name;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="student_sequence")
+	private Long id;
+
+    @Column
+    private String buslinie_name;
 
     public String getName() {
-        return name;
+        return buslinie_name;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String buslinie_name) {
+        this.buslinie_name = buslinie_name;
+    }
+    
+    public Long getId() {
+        return id;
+    }
+    public void setName(Long id) {
+        this.id = id;
     }
 }

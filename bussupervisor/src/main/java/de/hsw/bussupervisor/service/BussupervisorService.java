@@ -4,10 +4,12 @@ import de.hsw.bussupervisor.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.hsw.bussupervisor.repository.BuslinienRepository;
 import de.hsw.bussupervisor.repository.HaltestellenRepository;
@@ -26,6 +28,7 @@ public class BussupervisorService {
 
 	public void addNewHaltestelle(Haltestelle haltestelle) {
 		Optional<Haltestelle> optionalHaltestelle = haltestellenRepository.findHaltestelleByName(haltestelle.getName());
+		System.out.println(haltestelle.getName());
 		if (optionalHaltestelle.isPresent()) {
 			throw new IllegalArgumentException("Haltestelle ist schon vergeben");
 		}
@@ -42,7 +45,35 @@ public class BussupervisorService {
 
 	}
 
-	// public List<Buslinie> getBuslinie() {
-	// return bussupervisorRepository.findAll();
-	// }
+	public void addNewBuslinie(Buslinie buslinie) {
+		Optional<Buslinie> optionalBuslinie = buslinienRepository.findBuslinieByName(buslinie.getName());
+		System.out.println(buslinie.getName());
+		if (optionalBuslinie.isPresent()) {
+			throw new IllegalArgumentException("Buslinie ist schon vergeben");
+		}
+		buslinienRepository.save(buslinie);
+		System.out.println(buslinie.getName());
+
+	}
+	
+	@Transactional
+	public void updateHaltestelle(String haltestelleName, String updatedName) {
+		Haltestelle haltestelle = haltestellenRepository.findHaltestelleByName(haltestelleName).orElseThrow();
+	
+	if (updatedName != null && !Objects.equals(haltestelle.getName(), updatedName)) {
+		haltestelle.setName(updatedName);
+	}
+	
+	}
+	
+	@Transactional
+    public void updateBuslinie(String buslinieName, String updatedName) {
+		Buslinie buslinie = buslinienRepository.findBuslinieByName(buslinieName).orElseThrow();
+	
+		if (updatedName != null && !Objects.equals(buslinie.getName(), updatedName)) {
+			buslinie.setName(updatedName);
+		}
+    }
+
+	
 }

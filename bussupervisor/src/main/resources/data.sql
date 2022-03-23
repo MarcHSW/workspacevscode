@@ -1,6 +1,7 @@
 INSERT IGNORE INTO
     T_BUSLINIE (
-        NAME
+        
+        BUSLINIE_NAME
     )
 values
     (
@@ -9,7 +10,7 @@ values
 
 INSERT IGNORE INTO
     T_HALTESTELLE (
-        NAME
+        HALTESTELLE_NAME
     )
 VALUES
     (
@@ -19,11 +20,11 @@ VALUES
         'HildesheimHBF'
     );
 
-INSERT INTO
+INSERT IGNORE INTO
     T_BUSFAHRT (
         BUSLINIE_NAME,
-        START_HALTESTELLE,
-        ZIEL_HALTESTELLE,
+        START_HALTESTELLE_NAME,
+        ZIEL_HALTESTELLE_NAME,
         ABFAHRTS_ZEIT,
         ANKUNFTS_ZEIT
     )
