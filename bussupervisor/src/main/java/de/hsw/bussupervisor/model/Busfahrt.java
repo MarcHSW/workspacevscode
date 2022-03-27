@@ -15,19 +15,20 @@ public class Busfahrt {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @JoinColumn(name = "BUSFAHRT_ID", nullable = false)
+    private long busfahrt_id;
 
     @Column
-    @JoinColumn(name = "BUSLINIE_NAME", nullable = false)
-    private String buslinieName;
+    @JoinColumn(name = "BUSLINIE_ID", nullable = false)
+    private String buslinie_id;
 
     @Column
-    @JoinColumn(name = "START_HALTESTELLE_NAME", nullable = false)
-    private String startHaltestelle;
+    @JoinColumn(name = "START_HALTESTELLE_ID", nullable = false)
+    private int start_Haltestelle_Id;
 
     @Column
-    @JoinColumn(name = "ZIEL_HALTESTELLE_NAME", nullable = false)
-    private String zielHaltestelle;
+    @JoinColumn(name = "ZIEL_HALTESTELLE_ID", nullable = false)
+    private int ziel_Haltestelle_Id;
 
     @Column
     @JoinColumn(name = "ANKUNFTS_ZEIT", nullable = false)

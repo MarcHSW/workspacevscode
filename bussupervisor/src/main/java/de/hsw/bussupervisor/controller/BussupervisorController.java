@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,16 +51,27 @@ public class BussupervisorController {
    
     }
 
-    // @DeleteMapping(path = "{studentID}")
-    // public void deleteStudent(@PathVariable("studentID") Long id) {
-    // studentService.deleteStudent(id);
-    // }
+    @DeleteMapping(path = "deleteHaltestelle/{haltestelleName}")
+    public void deleteHaltestelle(@PathVariable("haltestelleName") String haltestelleName) {
+        bussupervisorService.deleteBuslinie(haltestelleName);
+    }
+
+    @DeleteMapping(path = "deleteHaltestelle/{buslinieName}")
+    public void deleteBuslinie(@PathVariable("buslinieName") String buslinieName) {
+        bussupervisorService.deleteHaltestelle(buslinieName);
+    }
+
+    @DeleteMapping(path = "deleteFahrplan/{fahrplanID}")
+    public void deleteFahrplan(@PathVariable("fahrplanID") Long fahrplanID) {
+        bussupervisorService.deleteFahrplan(fahrplanID);
+    }
 
     @PutMapping(path = "/changeBuslinieName/{buslinieName}")
     public void updateBuslinieName(@PathVariable("buslinieName") String buslinieName,
     @RequestParam(required = true) String updatedName) {
         bussupervisorService.updateBuslinie(buslinieName, updatedName);
     }
+    
     @PutMapping(path = "/changeHaltestelleName/{haltestelleName}")
     public void updateHaltestelleName(@PathVariable("haltestelleName") String haltestelleName,
     @RequestParam(required = true) String updatedName) {

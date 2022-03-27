@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -12,11 +13,12 @@ import javax.persistence.Table;
 public class Buslinie {
 
     @Id
-    @Column
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="student_sequence")
-	private Long id;
+    @Column(name = "BUSLINIE_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long BUSLINIE_ID;
 
-    @Column
+    
+    @Column(name = "BUSLINIE_NAME")
     private String buslinie_name;
 
     public String getName() {
@@ -26,10 +28,10 @@ public class Buslinie {
         this.buslinie_name = buslinie_name;
     }
     
-    public Long getId() {
-        return id;
+    public Long getBuslinieId() {
+        return BUSLINIE_ID;
     }
-    public void setName(Long id) {
-        this.id = id;
+    public void setBuslinieId(Long BUSLINIE_ID) {
+        this.BUSLINIE_ID = BUSLINIE_ID;
     }
 }

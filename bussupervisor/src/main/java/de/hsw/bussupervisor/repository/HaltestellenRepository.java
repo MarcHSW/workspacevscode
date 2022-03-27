@@ -9,9 +9,9 @@ import de.hsw.bussupervisor.model.Haltestelle;
 
 
 @Repository
-public interface HaltestellenRepository extends JpaRepository<Haltestelle, Integer> {
+public interface HaltestellenRepository extends JpaRepository<Haltestelle, Long> {
 
-    @Query(value ="SELECT HALTESTELLE_NAME FROM T_Haltestelle WHERE HALTESTELLE_NAME=?1", nativeQuery = true)
+    @Query(value ="SELECT HALTESTELLE_ID, HALTESTELLE_NAME FROM T_Haltestelle WHERE HALTESTELLE_NAME=?1", nativeQuery = true)
     Optional<Haltestelle> findHaltestelleByName(String name);
 
 }

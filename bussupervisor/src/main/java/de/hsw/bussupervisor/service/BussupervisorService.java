@@ -8,22 +8,26 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.hsw.bussupervisor.repository.BuslinienRepository;
+import de.hsw.bussupervisor.repository.FahrplanRepository;
 import de.hsw.bussupervisor.repository.HaltestellenRepository;
 
 @Service
 public class BussupervisorService {
 	private final HaltestellenRepository haltestellenRepository;
 	private final BuslinienRepository buslinienRepository;
+	private final FahrplanRepository fahrplanRepository;
 
 	@Autowired
-	public BussupervisorService(HaltestellenRepository bussupervisorRepository,
-			BuslinienRepository buslinienRepository) {
-		this.haltestellenRepository = bussupervisorRepository;
+	public BussupervisorService(HaltestellenRepository haltestellenRepository,
+			BuslinienRepository buslinienRepository, FahrplanRepository fahrplanRepository) {
+		this.haltestellenRepository = haltestellenRepository;
 		this.buslinienRepository = buslinienRepository;
+		this.fahrplanRepository = fahrplanRepository;
 	}
 
 	public void addNewHaltestelle(Haltestelle haltestelle) {
@@ -55,25 +59,68 @@ public class BussupervisorService {
 		System.out.println(buslinie.getName());
 
 	}
-	
+
 	@Transactional
 	public void updateHaltestelle(String haltestelleName, String updatedName) {
 		Haltestelle haltestelle = haltestellenRepository.findHaltestelleByName(haltestelleName).orElseThrow();
-	
-	if (updatedName != null && !Objects.equals(haltestelle.getName(), updatedName)) {
-		haltestelle.setName(updatedName);
+
+		if (updatedName != null && !Objects.equals(haltestelle.getName(), updatedName)) {
+			haltestelle.setName(updatedName);
+		}
+
 	}
-	
-	}
-	
+
 	@Transactional
-    public void updateBuslinie(String buslinieName, String updatedName) {
+	public void updateBuslinie(String buslinieName, String updatedName) {
 		Buslinie buslinie = buslinienRepository.findBuslinieByName(buslinieName).orElseThrow();
-	
+
 		if (updatedName != null && !Objects.equals(buslinie.getName(), updatedName)) {
 			buslinie.setName(updatedName);
 		}
-    }
+	}
+	@Transactional
+	public void deleteHaltestelle(String haltestelleName) {
+		Haltestelle haltestelle = haltestellenRepository.findHaltestelleByName(haltestelleName).orElseThrow();
+		try {
 
+			haltestellenRepository.deleteById(haltestelle.getId());
+			System.out.println("Haltestelle: " + haltestelleName + " has been deleted");
+
+		} catch (DataIntegrityViolationException e) {
+			System.err.println("Die Haltestelle " + haltestelleName
+					+ " konnte nicht gelöscht werden, da sie einer Buslinie zugeordnet ist");
+
+		}
+
+	}
+	@Transactional
+	public void deleteBuslinie(String buslinieName) {
+		Buslinie buslinie = buslinienRepository.findBuslinieByName(buslinieName).orElseThrow();
+		try {
+
+			buslinienRepository.deleteById(buslinie.getBuslinieId());
+			System.out.println("Buslinie: " + buslinieName + " has been deleted");
+
+		} catch (DataIntegrityViolationException e) {
+			System.err.println("Die Buslinie " + buslinieName
+					+ " konnte nicht gelöscht werden, da sie einer Buslinie zugeordnet ist");
+
+		}
+	}
 	
-}
+	@Transactional
+	public void deleteFahrplan(Long fahrplanID) {
+		try{
+
+			fahrplanRepository.deleteFahrplaeneByID(fahrplanID);
+			System.out.println("Fahrplan mit der ID: " +fahrplanID + " wurde gelöscht");
+			
+		} catch (DataIntegrityViolationException e){
+			System.err.println("Der Fahrplan mit der ID " + fahrplanID +" konnte nicht gelöscht werden");
+
+		}
+	}
+
+	}
+
+
