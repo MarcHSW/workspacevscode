@@ -17,18 +17,30 @@ let columns = [
 
 function Buslinien() {
   const [buslinien, setBuslinien] = useState([
-    { name: "370", haltestellen: ["sehnde", "rethmar"] }
+    { name: "370", haltestellen: ["sehnde", "rethmar"]},
+    { name: "800", haltestellen: ["sehnde", "rethmar"]}
   ]);
 
   const buslinienNameRef = useRef();
 
-  function handleAddBuslinie(e) {
+  function handleAddBuslinie() {
     const name = buslinienNameRef.current.value;
 
     setBuslinien((prevBuslinien) => {
       return [...prevBuslinien, { name: name, haltestellen: [] }];
     });
     buslinienNameRef.current.value = null;
+  }
+
+  
+//TODO: implementieren
+  const openKundenansicht = () => {
+
+  }
+
+  //TODO: implementieren
+  const openMitarbeiteransicht = () =>{
+
   }
 
   const fetchBuslinien = () => {
@@ -42,12 +54,25 @@ function Buslinien() {
     fetchBuslinien();
   }, [])
 
-  return buslinien.map((buslinien, index) => {
+
+  const buslinienTable = buslinien.map((buslinien, index) => {
     return (<div key={index}>
-      <h1>{buslinien.name}</h1>
-      <p>{buslinien.haltestellen}</p>
-    </div>)
-  }) 
+     <Table
+     columns={columns}
+      data={[buslinien]}
+      tableLayout="auto"
+    />
+  </div>)
+  
+});
+
+  return <div>
+  <button onClick={openMitarbeiteransicht}>Mitarbeiteransicht</button>
+  <button onClick={openKundenansicht}>Kundenansicht</button>
+  <input ref={buslinienNameRef} type="text" />
+  <button onClick={handleAddBuslinie}>Buslinie hinzufügen</button>
+  <div>{buslinienTable}</div> 
+  </div> 
  
 }
 
