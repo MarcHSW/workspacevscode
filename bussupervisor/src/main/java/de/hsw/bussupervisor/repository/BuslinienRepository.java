@@ -19,4 +19,7 @@ public interface BuslinienRepository extends JpaRepository<Buslinie, Long> {
     @Query(value = "SELECT BUSLINIE_NAME FROM T_BUSLINIE WHERE BUSLINIE_NAME=?1", nativeQuery = true)
     Optional<Buslinie> findBuslinieByName(String name);
 
+    @Query(value = "SELECT BUSLINIE_NAME FROM T_BUSLINIE WHERE BUSLINIE_NAME=?1", nativeQuery = true)
+    ArrayList<Buslinie> getHaltestellenFromBuslinie(String buslinieName);
+
 }

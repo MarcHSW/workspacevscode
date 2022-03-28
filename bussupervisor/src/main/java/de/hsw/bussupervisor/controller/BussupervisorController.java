@@ -28,7 +28,7 @@ public class BussupervisorController {
         this.bussupervisorService = bussupervisorService;
     }
 
-    @GetMapping(value = "/get/{haltestelleName}")
+    @GetMapping(value = "/getBuslinieWhoVisitsHaltestelle/{haltestelleName}")
     public ArrayList<Buslinie> getBuslinieWhoVisitsHaltestelle(@PathVariable("haltestelleName") String haltestelleName) {
         System.out.println(haltestelleName);
         return bussupervisorService.getBuslinieFromHaltestelle(haltestelleName);
@@ -71,10 +71,16 @@ public class BussupervisorController {
     @RequestParam(required = true) String updatedName) {
         bussupervisorService.updateBuslinie(buslinieName, updatedName);
     }
-    
+
     @PutMapping(path = "/changeHaltestelleName/{haltestelleName}")
     public void updateHaltestelleName(@PathVariable("haltestelleName") String haltestelleName,
     @RequestParam(required = true) String updatedName) {
         bussupervisorService.updateHaltestelle(haltestelleName, updatedName);
+    }
+
+    @GetMapping(value = "/getHaltestellenFromBuslinie/{buslinieName}")
+    public ArrayList<Buslinie> getHaltestellenFromBuslinie(@PathVariable("buslinieName") String buslinieName) {
+        System.out.println(buslinieName);
+        return bussupervisorService.getHaltestellenFromBuslinie(buslinieName);
     }
 }

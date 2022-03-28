@@ -107,7 +107,7 @@ public class BussupervisorService {
 
 		}
 	}
-	
+
 	@Transactional
 	public void deleteFahrplan(Long fahrplanID) {
 		try{
@@ -119,6 +119,10 @@ public class BussupervisorService {
 			System.err.println("Der Fahrplan mit der ID " + fahrplanID +" konnte nicht gelöscht werden");
 
 		}
+	}
+
+	public ArrayList<Buslinie> getHaltestellenFromBuslinie(String buslinieName) {
+		return buslinienRepository.getHaltestellenFromBuslinie(buslinieName);
 	}
 
 	}
