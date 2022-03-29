@@ -22,7 +22,7 @@ import de.hsw.bussupervisor.service.BussupervisorService;
 
 @RestController
 @RequestMapping(path = "bussupervisor")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class BussupervisorController {
 
     private final BussupervisorService bussupervisorService;

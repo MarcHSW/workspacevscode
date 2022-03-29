@@ -41,6 +41,7 @@ export default () => {
         });
   }
 
+
   const handleArrivaltimeToHaltestelleFromBuslinie = () =>{
 
   }
@@ -73,14 +74,16 @@ export default () => {
           Haltestellen von Buslinie:
           <Input ref={haltestellenWhoVisitBuslinieRef} type="text" />
           <Button variant="contained" onClick={handleHaltestellenWhoVisitBuslinie}>anzeigen</Button>
+          Fahrplan:
+          <Input ref={FahrplanToShowRef} type="text" />
+          <Button variant="contained" onClick={handleShowFahrplan}>anzeigen</Button>
+          <div>
           Ankunftszeiten der Buslinie:
           <Input ref={buslinieToHaltestelleRef} type="text" />
           an der Haltestelle:
           <Input ref={halteStelletoBuslinieRef} type="text" />
           <Button variant="contained" onClick={handleArrivaltimeToHaltestelleFromBuslinie}>anzeigen</Button>
-          Fahrplan:
-          <Input ref={FahrplanToShowRef} type="text" />
-          <Button variant="contained" onClick={handleShowFahrplan}>anzeigen</Button>
+          </div>
         </div>
             <BasicTable columns={columns} rows={rows} />
         </>
