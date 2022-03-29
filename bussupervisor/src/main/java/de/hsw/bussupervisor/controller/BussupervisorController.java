@@ -56,7 +56,7 @@ public class BussupervisorController {
         bussupervisorService.deleteBuslinie(haltestelleName);
     }
 
-    @DeleteMapping(path = "deleteHaltestelle/{buslinieName}")
+    @DeleteMapping(path = "deleteBuslinie{buslinieName}")
     public void deleteBuslinie(@PathVariable("buslinieName") String buslinieName) {
         bussupervisorService.deleteHaltestelle(buslinieName);
     }
