@@ -1,10 +1,8 @@
 package de.hsw.bussupervisor.service;
 
-import de.hsw.bussupervisor.model.*;
-
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -13,6 +11,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.hsw.bussupervisor.model.Busfahrt;
+import de.hsw.bussupervisor.model.Buslinie;
+import de.hsw.bussupervisor.model.Fahrplan;
+import de.hsw.bussupervisor.model.Haltestelle;
+import de.hsw.bussupervisor.repository.BusfahrtRepository;
 import de.hsw.bussupervisor.repository.BuslinienRepository;
 import de.hsw.bussupervisor.repository.FahrplanRepository;
 import de.hsw.bussupervisor.repository.HaltestellenRepository;
@@ -22,23 +25,24 @@ public class BussupervisorService {
 	private final HaltestellenRepository haltestellenRepository;
 	private final BuslinienRepository buslinienRepository;
 	private final FahrplanRepository fahrplanRepository;
-
+	private final BusfahrtRepository busfahrtRepository;
 	@Autowired
 	public BussupervisorService(HaltestellenRepository haltestellenRepository,
-			BuslinienRepository buslinienRepository, FahrplanRepository fahrplanRepository) {
+			BuslinienRepository buslinienRepository, FahrplanRepository fahrplanRepository,BusfahrtRepository busfahrtRepository ) {
 		this.haltestellenRepository = haltestellenRepository;
 		this.buslinienRepository = buslinienRepository;
 		this.fahrplanRepository = fahrplanRepository;
+		this.busfahrtRepository = busfahrtRepository;
 	}
 	
 	public void addNewHaltestelle(Haltestelle haltestelle) {
-		Optional<Haltestelle> optionalHaltestelle = haltestellenRepository.findHaltestelleByName(haltestelle.getName());
-		System.out.println(haltestelle.getName());
+		Optional<Haltestelle> optionalHaltestelle = haltestellenRepository.findHaltestelleByName(haltestelle.getHaltestelleName());
+		System.out.println(haltestelle.getHaltestelleName());
 		if (optionalHaltestelle.isPresent()) {
 			throw new IllegalArgumentException("Haltestelle ist schon vergeben");
 		}
 		haltestellenRepository.save(haltestelle);
-		System.out.println(haltestelle.getName());
+		System.out.println(haltestelle.getHaltestelleName());
 		
 	}
 	public void addNewFahrplan(Fahrplan fahrplan) {
@@ -68,7 +72,7 @@ public class BussupervisorService {
 	public void updateHaltestelle(String haltestelleName, String updatedName) {
 		Haltestelle haltestelle = haltestellenRepository.findHaltestelleByName(haltestelleName).orElseThrow();
 
-		if (updatedName != null && !Objects.equals(haltestelle.getName(), updatedName)) {
+		if (updatedName != null && !Objects.equals(haltestelle.getHaltestelleName(), updatedName)) {
 			haltestelle.setName(updatedName);
 		}
 
@@ -129,7 +133,7 @@ public class BussupervisorService {
 		return buslinienRepository.getHaltestellenFromBuslinie(buslinieName);
 	}
 
-	public ArrayList<Buslinie> getFahrplanFuerHaltestelle(String haltestelleName, String uhrzeit) {
+	public String getFahrplanFuerHaltestelle(String haltestelleName, String uhrzeit) {
 		Timestamp ts = Timestamp.valueOf(uhrzeit);
 		Timestamp tsWith24Hours = new Timestamp(ts.getTime() + (1000* 60*60*24));
 		System.out.println(ts);
@@ -137,7 +141,29 @@ public class BussupervisorService {
 		return buslinienRepository.getFahrplanFuerHaltestelle(haltestelleName, ts, tsWith24Hours);
 	}
 
-
+	public void addHaltestelleZuBuslinie(Busfahrt busfahrt) {
+		
 	}
+
+	@Transactional
+	public void deleteHaltestelleFromBuslinie(String haltestelleName, String buslinieName) {
+		String haltestelle_id = haltestellenRepository.getIdForName(haltestelleName);
+		String buslinie_id = buslinienRepository.getIdForName(buslinieName);
+		System.out.println(haltestelle_id);
+		System.out.println(buslinie_id);
+	try{
+
+			busfahrtRepository.deleteHaltestelleFromBuslinie(haltestelle_id, buslinie_id);
+			System.err.println("Die Haltestelle: " +haltestelleName + " wurde von der Buslinie" +buslinieName+ "gelöscht");
+			
+		} catch (DataIntegrityViolationException e){
+			System.err.println("Die Haltestelle: " +haltestelleName + " konnte von der Buslinie" +buslinieName+ " nicht gelöscht werden");
+
+		}
+	}
+	}
+
+
+	
 
 

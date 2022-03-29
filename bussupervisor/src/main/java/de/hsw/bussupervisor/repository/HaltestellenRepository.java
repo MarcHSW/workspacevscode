@@ -14,4 +14,7 @@ public interface HaltestellenRepository extends JpaRepository<Haltestelle, Long>
     @Query(value ="SELECT HALTESTELLE_ID, HALTESTELLE_NAME FROM T_Haltestelle WHERE HALTESTELLE_NAME=?1", nativeQuery = true)
     Optional<Haltestelle> findHaltestelleByName(String name);
 
+    @Query(value ="SELECT HALTESTELLE_ID FROM t_HALTESTELLE as h WHERE h.HALTESTELLE_NAME=?1", nativeQuery = true)
+    String getIdForName(String haltestelleName);
+
 }

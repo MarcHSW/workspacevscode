@@ -1,4 +1,5 @@
 package de.hsw.bussupervisor.controller;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsw.bussupervisor.model.Busfahrt;
 import de.hsw.bussupervisor.model.Buslinie;
 import de.hsw.bussupervisor.model.Fahrplan;
 import de.hsw.bussupervisor.model.Haltestelle;
@@ -57,6 +59,11 @@ public class BussupervisorController {
     bussupervisorService.addNewFahrplan(fahrplan);
 
     }
+    @PostMapping(path ="/addHaltestelleZuBuslinie")
+    public void addFahrplan(@RequestBody Busfahrt busfahrt) {
+    bussupervisorService.addHaltestelleZuBuslinie(busfahrt);
+
+    }
 
     @DeleteMapping(path = "deleteHaltestelle/{haltestelleName}")
     public void deleteHaltestelle(@PathVariable("haltestelleName") String haltestelleName) {
@@ -71,6 +78,11 @@ public class BussupervisorController {
     @DeleteMapping(path = "deleteFahrplan/{fahrplanID}")
     public void deleteFahrplan(@PathVariable("fahrplanID") Long fahrplanID) {
         bussupervisorService.deleteFahrplan(fahrplanID);
+    }
+
+    @DeleteMapping(path = "deleteHaltestelleFromBuslinie/{haltestelleName}/{buslinieName}")
+    public void deleteHaltestelleFromBuslinie(@PathVariable("haltestelleName") String haltestelleName,@PathVariable("buslinieName") String buslinieName ) {
+        bussupervisorService.deleteHaltestelleFromBuslinie(haltestelleName, buslinieName);
     }
 
     @PutMapping(path = "/changeBuslinieName/{buslinieName}")
@@ -92,7 +104,7 @@ public class BussupervisorController {
     }
 
     @GetMapping(value = "/getFahrplanFuerHaltestelle/{haltestelleName}/{uhrzeit}")
-    public ArrayList<Buslinie> getFahrplanFuerHaltestelle(@PathVariable("haltestelleName") String haltestelleName, @PathVariable("uhrzeit") String uhrzeit ) {
+    public String getFahrplanFuerHaltestelle(@PathVariable("haltestelleName") String haltestelleName, @PathVariable("uhrzeit") String uhrzeit ) {
         return bussupervisorService.getFahrplanFuerHaltestelle(haltestelleName, uhrzeit );
     }
 }

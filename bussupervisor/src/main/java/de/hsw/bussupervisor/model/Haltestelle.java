@@ -23,7 +23,7 @@ public class Haltestelle {
     @JoinColumn(name = "HALTESTELLE_NAME", nullable = false)
     private String haltestelle_name;
 
-    public String getName() {
+    public String getHaltestelleName() {
         return haltestelle_name;
     }
     public void setName(String haltestelle_name) {

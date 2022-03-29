@@ -13,21 +13,17 @@ import javax.persistence.Table;
 public class Fahrplan {
 
     @Id
-    @Column
+    @Column(name = "FAHRPLAN_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "FAHRPLAN_ID", nullable = false)
     private long fahrplan_id;
     
-    @Column
-    @JoinColumn(name = "BUSLINIE_ID", nullable = false)
+    @Column(name = "BUSLINIE_ID")
     private long buslinie_id;
 
-    @Column
-    @JoinColumn(name = "ABFAHRTS_ZEIT", nullable = false)
+    @Column(name = "ABFAHRTS_ZEIT")
     private java.sql.Timestamp abfahrts_zeit;
 
-    @Column
-    @JoinColumn(name = "ZIEL_HALTESTELLE_ID", nullable = false)
+    @Column(name = "ZIEL_HALTESTELLE_ID")
     private int ziel_Haltestelle_Id;
 
 
