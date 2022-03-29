@@ -22,6 +22,15 @@ public class Fahrplan {
     @JoinColumn(name = "BUSLINIE_ID", nullable = false)
     private long buslinie_id;
 
+    @Column
+    @JoinColumn(name = "ABFAHRTS_ZEIT", nullable = false)
+    private java.sql.Timestamp abfahrts_zeit;
+
+    @Column
+    @JoinColumn(name = "ZIEL_HALTESTELLE_ID", nullable = false)
+    private int ziel_Haltestelle_Id;
+
+
 
     public long getFahrplanId(){
         return fahrplan_id;

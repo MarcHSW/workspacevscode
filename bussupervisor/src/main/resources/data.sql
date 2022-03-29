@@ -90,19 +90,30 @@ VALUES
 
     INSERT IGNORE INTO T_FAHRPLAN (
         FAHRPLAN_ID,
-        BUSLINIE_ID
+        BUSLINIE_ID,
+        ABFAHRTS_ZEIT,
+        ZIEL_HALTESTELLE_ID
     )
 VALUES
     (
         1,
+        2,
+        '2008-12-11 17:00:44',
         2
+
+
     ),
     (
         1,
+        1,
+        '2008-11-11 17:30:44',
         1
+
     ),
     (
         2,
+        1,
+        '2010-05-05 17:30:44',
         1
     );
 

@@ -1,5 +1,6 @@
 package de.hsw.bussupervisor.repository;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -21,5 +22,8 @@ public interface BuslinienRepository extends JpaRepository<Buslinie, Long> {
 
     @Query(value = "SELECT BUSLINIE_NAME FROM T_BUSLINIE WHERE BUSLINIE_NAME=?1", nativeQuery = true)
     ArrayList<Buslinie> getHaltestellenFromBuslinie(String buslinieName);
+    
+    @Query(value = "SELECT BUSLINIE_NAME FROM T_BUSLINIE WHERE BUSLINIE_NAME=?1", nativeQuery = true)
+    ArrayList<Buslinie> getFahrplanFuerHaltestelle(String haltestelleName, Timestamp ts, Timestamp tsWith24Hours);
 
 }

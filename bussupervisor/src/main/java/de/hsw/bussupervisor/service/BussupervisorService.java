@@ -2,6 +2,7 @@ package de.hsw.bussupervisor.service;
 
 import de.hsw.bussupervisor.model.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +30,7 @@ public class BussupervisorService {
 		this.buslinienRepository = buslinienRepository;
 		this.fahrplanRepository = fahrplanRepository;
 	}
-
+	
 	public void addNewHaltestelle(Haltestelle haltestelle) {
 		Optional<Haltestelle> optionalHaltestelle = haltestellenRepository.findHaltestelleByName(haltestelle.getName());
 		System.out.println(haltestelle.getName());
@@ -38,7 +39,10 @@ public class BussupervisorService {
 		}
 		haltestellenRepository.save(haltestelle);
 		System.out.println(haltestelle.getName());
-
+		
+	}
+	public void addNewFahrplan(Fahrplan fahrplan) {
+		fahrplanRepository.save(fahrplan);
 	}
 
 	public ArrayList<Buslinie> getBuslinieFromHaltestelle(String haltestelleName) {
@@ -124,6 +128,15 @@ public class BussupervisorService {
 	public ArrayList<Buslinie> getHaltestellenFromBuslinie(String buslinieName) {
 		return buslinienRepository.getHaltestellenFromBuslinie(buslinieName);
 	}
+
+	public ArrayList<Buslinie> getFahrplanFuerHaltestelle(String haltestelleName, String uhrzeit) {
+		Timestamp ts = Timestamp.valueOf(uhrzeit);
+		Timestamp tsWith24Hours = new Timestamp(ts.getTime() + (1000* 60*60*24));
+		System.out.println(ts);
+		System.out.println(tsWith24Hours);
+		return buslinienRepository.getFahrplanFuerHaltestelle(haltestelleName, ts, tsWith24Hours);
+	}
+
 
 	}
 

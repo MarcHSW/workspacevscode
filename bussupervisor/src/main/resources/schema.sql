@@ -25,6 +25,8 @@ create table if not exists T_BUSFAHRT (
 create table if not exists T_FAHRPLAN (
     FAHRPLAN_ID int NOT NULL,
     BUSLINIE_ID int NOT NULL,
+    ABFAHRTS_ZEIT DATETIME not null,
+    ZIEL_HALTESTELLE_ID int NOT NULL,
     foreign key (BUSLINIE_ID) references T_BUSLINIE(BUSLINIE_ID),
     CONSTRAINT PK_FAHRPLAN PRIMARY KEY (FAHRPLAN_ID, BUSLINIE_ID)
 );
