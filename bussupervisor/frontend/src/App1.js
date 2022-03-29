@@ -33,6 +33,7 @@ function Buslinien() {
   const buslinieIntoFahrplanEndhaltestelle = useRef();
   const FahrplanDeleteRef = useRef();
   const BuslinieDeleteRef = useRef();
+  const buslinieWhoVisitHaltestelleRef = useRef();
 
 
   //Buslinien hinzufügen
@@ -151,6 +152,28 @@ function Buslinien() {
 
   }
 
+  const handleBuslinieWhoVisitsHaltestelle = (haltestlle) =>{
+    const columns = [
+      {
+        heading: "Name",
+        property: "name",
+      },
+      {
+        heading: "Buslinien",
+        property: "buslinien",
+      },
+    ];
+    axios
+      .get("http://localhost:8080/bussupervisor/getBuslinieWhoVisitsHaltestelle/" + haltestlle)
+      .then((res) => {
+        return (
+        <div>
+          <Table columns={columns} data={[res.data]} tableLayout="auto"/>
+        </div>
+      )
+    });
+  }
+
   const changeToKundenansicht = () => {
     setOpenKundenansicht(true);
     setOpenMitarbeiteransicht(false);
@@ -231,8 +254,8 @@ function Buslinien() {
       {/* Die Kundenansicht*/}
       {openKundenansicht && (
         <div>
-          <input ref={buslinienNameRef} type="text" />
-          <button onClick={changeToBuslinienTable}>Buslinie anzeigen</button>
+          <input ref={buslinieWhoVisitHaltestelleRef} type="text" />
+          <button onClick={handleBuslinieWhoVisitsHaltestelle}>Buslinie anzeigen</button>
           <input ref={haltestellenNameRef} type="text" />
           <button onClick={changeToHaltestellenTable}>
             Haltestelle anzeigen
