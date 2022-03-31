@@ -22,7 +22,7 @@ public interface BuslinienRepository extends JpaRepository<Buslinie, Long> {
     @Query(value = "SELECT BUSLINIE_NAME FROM T_BUSLINIE WHERE BUSLINIE_NAME=?1", nativeQuery = true)
     Optional<Buslinie> findBuslinieByName(String name);
 
-    @Query(value = "SELECT BUSLINIE_NAME FROM T_BUSLINIE WHERE BUSLINIE_NAME=?1", nativeQuery = true)
+    @Query(value = "SELECT l.BUSLINIE_ID, l.BUSLINIE_NAME FROM T_BUSLINIE as l WHERE l.BUSLINIE_NAME=?1", nativeQuery = true)
     ArrayList<Buslinie> getHaltestellenFromBuslinie(String buslinieName);
 
     @Query(value = "SELECT l.BUSLINIE_NAME, f.ANKUNFTS_ZEIT, h.HALTESTELLE_NAME FROM t_busfahrt as f inner JOIN t_buslinie as l ON l.BUSLINIE_ID = f.BUSLINIE_ID INNER JOIN t_haltestelle as h ON h.HALTESTELLE_ID = f.Start_HALTESTELLE_ID WHERE f.ANKUNFTS_ZEIT BETWEEN ?2 AND ?3 AND h.HALTESTELLE_NAME =?1", nativeQuery = true)
