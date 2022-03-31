@@ -142,7 +142,7 @@ public class BussupervisorService {
 	}
 
 	public void addHaltestelleZuBuslinie(Busfahrt busfahrt) {
-		
+		busfahrtRepository.save(busfahrt);
 	}
 
 	@Transactional

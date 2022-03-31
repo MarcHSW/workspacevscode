@@ -1,5 +1,4 @@
 package de.hsw.bussupervisor.controller;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
