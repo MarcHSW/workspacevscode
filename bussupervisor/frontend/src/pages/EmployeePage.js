@@ -52,74 +52,77 @@ export default () => {
     setaddHaltestelleNextHaltestelleRef,
   ] = useState();
 
+
   //Buslinien hinzufügen
   function handleAddBuslinie() {
-    let headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-  
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Credentials', 'true');
-  
-    headers.append('GET', 'POST', 'OPTIONS');
-
-    fetch(
-      "http://localhost:8080/bussupervisor/addBuslinie/" + buslinienNameRef,
-      {
-        method: "POST",
-        headers: { headers },
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/bussupervisor/addBuslinie',
+      data: {
+        "name": buslinienNameRef
       }
-    );
-    // console.log(buslinienNameRef);
-
-    // axios.post(
-    //   "http://localhost:8080/bussupervisor/addBuslinie/" + buslinienNameRef
-    // );
+    })
   }
 
   //Haltestellen hinzufügen
   function handleAddHaltestelle() {
-    const name = haltestellenNameRef;
-    axios.post(
-      "http://localhost:8080/bussupervisor/post/addBuslinie/" +
-        haltestellenNameRef
-    );
-    setHaltestellen((prevHaltestellen) => {
-      return [...prevHaltestellen, { name: name, haltestellen: [] }];
-    });
-    haltestellenNameRef.current.value = null;
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/bussupervisor/addHaltestelle',
+      data: {
+        "name": haltestellenNameRef
+      }
+    })
   }
 
+//ToDo:
   const handleAddHaltestelleToBuslinie = () => {
-    axios.post(
-      "http://localhost:8080/bussupervisor/addHaltestelle" +
-        haltestelleZuBuslinieHaltestelleRef
-    );
+    
+    axios({
+      method: 'put',
+      url: 'http://localhost:8080/bussupervisor/addHaltestelleZuBuslinie/'+ haltestelleZuBuslinieHaltestelleRef + "?updatedName=" + haltestelleZuBuslinieBuslinieRef,
+    })
   };
 
-  const handleRenameHaltestelle = () => {
-    let oldHaltestelle = haltestellen.pop(
-      haltestellen.find(
-        (element) => element.name === oldNameRefHaltestelle.current.value
-      )
-    );
-    oldHaltestelle.name = newNameRefHaltestelle.current.value;
-    haltestellen.push(oldHaltestelle.current.value);
+
+  const handleChangeHaltestelleName = () => {
+    
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/bussupervisor/addHaltestelleZuBuslinie',
+      data: {
+        "name": haltestelleZuBuslinieHaltestelleRef,
+        "buslinieId": 0,
+        "ankunftsZeit": "2022-03-31T17:51:18.992Z",
+        "busfahrtId": 0,
+        "abfahrtsZeit": "2022-03-31T17:51:18.992Z"
+      }
+    })
   };
 
-  const handleRenameBuslinie = () => {
-    axios.post(
-      "http://localhost:8080/bussupervisor/addHaltestelle/changeBuslinieName/" +
-        oldNameRefBuslinie,
-      newNameRefBuslinie
-    );
-    buslinien
-      .find((element) => element.name === oldNameRefBuslinie)
-      .name.replace(oldNameRefBuslinie, newNameRefBuslinie);
+
+  const handleChangeBuslinieName = () => {
+    axios({
+      method: 'put',
+      url: 'http://localhost:8080/bussupervisor/changeBuslinieName/'+ oldNameRefBuslinie + "?updatedName=" + newNameRefBuslinie,
+    })
   };
 
-  const handleBuslinieIntoFahrplan = () => {};
+
+  const handleAddBuslinieIntoFahrplan = () => {
+    axios({
+    method: 'post',
+    url: 'http://localhost:8080/bussupervisor/addFahrplan',
+    data: {
+      "name": haltestelleZuBuslinieHaltestelleRef,
+      "buslinieId": 0,
+      "ankunftsZeit": "2022-03-31T17:51:18.992Z",
+      "busfahrtId": 0,
+      "abfahrtsZeit": "2022-03-31T17:51:18.992Z"
+    }
+  })
+  };
+
 
   const handleDeleteFahrplan = () => {
     axios.delete(
@@ -127,13 +130,13 @@ export default () => {
     );
   };
 
+
   const handleDeleteBuslinie = () => {
-   
-  
      axios.delete(
        "http://localhost:8080/bussupervisor/deleteBuslinie/" + buslinieDeleteRef
      );
   };
+
 
   const handleDeleteHaltestelle = () => {
     axios.delete(
@@ -142,7 +145,10 @@ export default () => {
     );
   };
 
-  const handleaddHaltestelleTo = () => {};
+
+  const handleaddHaltestelleTo = () => {
+
+  };
 
   const columns = ["Id", "Buslinienname"];
   const rows = [
@@ -212,7 +218,7 @@ export default () => {
             onChange={(e) => setnewNameRefHaltestelle(e.target.value)}
             type="text"
           />
-          <Button variant="contained" onClick={handleRenameHaltestelle}>
+          <Button variant="contained" onClick={handleChangeHaltestelleName}>
             Haltestelle umbenennen
           </Button>
         </div>
@@ -225,7 +231,7 @@ export default () => {
           onChange={(e) => setnewNameRefBuslinie(e.target.value)}
           type="text"
         />
-        <Button variant="contained" onClick={handleRenameBuslinie}>
+        <Button variant="contained" onClick={handleChangeBuslinieName}>
           Buslinie umbenennen
         </Button>
         <div>
@@ -246,7 +252,7 @@ export default () => {
             }
             type="text"
           />
-          <Button variant="contained" onClick={handleBuslinieIntoFahrplan}>
+          <Button variant="contained" onClick={handleAddBuslinieIntoFahrplan}>
             Buslinie zu Fahrplan hinzufügen
           </Button>
         </div>
