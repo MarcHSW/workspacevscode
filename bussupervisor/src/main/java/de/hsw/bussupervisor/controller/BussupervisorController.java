@@ -97,7 +97,7 @@ public class BussupervisorController {
     }
 
     @GetMapping(value = "/getHaltestellenFromBuslinie/{buslinieName}")
-    public ArrayList<Buslinie> getHaltestellenFromBuslinie(@PathVariable("buslinieName") String buslinieName) {
+    public ArrayList<Haltestelle> getHaltestellenFromBuslinie(@PathVariable("buslinieName") String buslinieName) {
         System.out.println(buslinieName);
         return bussupervisorService.getHaltestellenFromBuslinie(buslinieName);
     }

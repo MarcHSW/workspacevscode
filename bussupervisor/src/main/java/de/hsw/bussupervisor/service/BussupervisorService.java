@@ -129,7 +129,7 @@ public class BussupervisorService {
 		}
 	}
 
-	public ArrayList<Buslinie> getHaltestellenFromBuslinie(String buslinieName) {
+	public ArrayList<Haltestelle> getHaltestellenFromBuslinie(String buslinieName) {
 		return buslinienRepository.getHaltestellenFromBuslinie(buslinieName);
 	}
 
