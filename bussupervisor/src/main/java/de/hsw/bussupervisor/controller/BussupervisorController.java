@@ -62,9 +62,9 @@ public class BussupervisorController {
     bussupervisorService.addNewBuslinie(buslinie);
    
     }
-    @PostMapping(path ="/addFahrplan/{zielHaltestelleName}/{buslinieName}/{abfahrtsZeit}/{fahrplanId}")
-    public void addFahrplan(@PathVariable("zielHaltestelleName") String startHaltestelleName, @PathVariable("buslinieName") String buslinieName,@PathVariable("abfahrtsZeit") Timestamp abfahrtsZeit, @PathVariable("fahrplanId") String fahrplanId) {
-    bussupervisorService.addNewFahrplan(startHaltestelleName, buslinieName, abfahrtsZeit, fahrplanId);
+    @PostMapping(path ="/addFahrplan/{zielHaltestelleName}/{buslinieName}/{abfahrtsZeit}")
+    public void addFahrplan(@PathVariable("zielHaltestelleName") String startHaltestelleName, @PathVariable("buslinieName") String buslinieName,@PathVariable("abfahrtsZeit") Timestamp abfahrtsZeit) {
+    bussupervisorService.addNewFahrplan(startHaltestelleName, buslinieName, abfahrtsZeit);
 
     }
     @PostMapping(path ="/addHaltestelleZuBuslinie/{startHaltestelleName}/{zielHaltestelleName}/{buslinieName}/{abfahrtsZeit}/{ankunftsZeit}")

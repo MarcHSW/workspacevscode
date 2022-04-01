@@ -152,9 +152,7 @@ export default () => {
         "/" +
         buslinieIntoFahrplanBuslinie +
         "/" +
-        buslinieIntoFahrplanTime +
-        "/" +
-        buslinieIntoFahrplanFahrplan,
+        buslinieIntoFahrplanTime 
     }).then((response) => {
       if (response.status < 300) {
         setSuccess(true);
@@ -266,7 +264,7 @@ export default () => {
   //Zeigt alle Buslinien
   const handleShowAllBuslinien = () => {
     setShowFahrplanTable(false);
-    setShowFahrplanTable(false);
+    setShowHaltestelleTable(false);
     setSuccess(false);
     axios({
       method: "get",
@@ -377,15 +375,40 @@ export default () => {
             type="text"
             placeholder={"Haltestellenname"}
           />
-          im Fahrplan
-          <Input
-            onChange={(e) => setbuslinieIntoFahrplanFahrplan(e.target.value)}
-            type="text"
-            placeholder={"FahrplanId"}
-          />
           <Button variant="contained" onClick={handleAddBuslinieIntoFahrplan}>
             Buslinie zu Fahrplan hinzufügen
           </Button>
+          <h3>Haltestelle in eine Buslinie einfügen</h3>
+        Haltestelle:
+        <Input
+          onChange={(e) => setaddHaltestelleStartHaltestelleRef(e.target.value)}
+          type="text"
+          placeholder={"Haltestellenname"}
+        />
+        Buslinie:
+        <Input
+          onChange={(e) => setaddHaltestelleBuslinieRef(e.target.value)}
+          type="text"
+          placeholder={"Buslinienname"}
+        />
+        Abfahrtszeit:
+        <Input
+          onChange={(e) => setaddHaltestelleAbfahrtszeitRef(e.target.value)}
+          type="text"
+          placeholder={"jjjj-mm-dd hh:mm:ss"}
+        />
+        nächste Haltestelle:
+        <Input
+          onChange={(e) => setaddHaltestelleNextHaltestelleRef(e.target.value)}
+          type="text"
+          placeholder={"Haltestellenname"}
+        />
+        Ankunftszeit:
+        <Input
+          onChange={(e) => setaddHaltestelleAnkunftszeitRef(e.target.value)}
+          type="text"
+          placeholder={"jjjj-mm-dd hh:mm:ss"}
+        />
         </div>
         <h3>Dinge löschen</h3>
         <Input
@@ -435,37 +458,6 @@ export default () => {
         </Button>
       </div>
       <div>
-        <h3>Haltestelle in eine Buslinie einfügen</h3>
-        Haltestelle:
-        <Input
-          onChange={(e) => setaddHaltestelleStartHaltestelleRef(e.target.value)}
-          type="text"
-          placeholder={"Haltestellenname"}
-        />
-        Buslinie:
-        <Input
-          onChange={(e) => setaddHaltestelleBuslinieRef(e.target.value)}
-          type="text"
-          placeholder={"Buslinienname"}
-        />
-        Abfahrtszeit:
-        <Input
-          onChange={(e) => setaddHaltestelleAbfahrtszeitRef(e.target.value)}
-          type="text"
-          placeholder={"jjjj-mm-dd hh:mm:ss"}
-        />
-        nächste Haltestelle:
-        <Input
-          onChange={(e) => setaddHaltestelleNextHaltestelleRef(e.target.value)}
-          type="text"
-          placeholder={"Haltestellenname"}
-        />
-        Ankunftszeit:
-        <Input
-          onChange={(e) => setaddHaltestelleAnkunftszeitRef(e.target.value)}
-          type="text"
-          placeholder={"jjjj-mm-dd hh:mm:ss"}
-        />
         <div>
           <Button variant="contained" onClick={handleaddHaltestelleToBuslinie}>
             hinzufügen

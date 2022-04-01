@@ -45,16 +45,15 @@ public class BussupervisorService {
 		System.out.println(haltestelle.getHaltestelleName());
 		
 	}
-	public void addNewFahrplan(String startHaltestelleName, String buslinieName, Timestamp abfahrtsZeit, String fahrplanId) {
+	public void addNewFahrplan(String startHaltestelleName, String buslinieName, Timestamp abfahrtsZeit ) {
 		String ziel_haltestelle_id = haltestellenRepository.getIdForName(startHaltestelleName);
 		String buslinie_id = buslinienRepository.getIdForName(buslinieName);
 	
 		Fahrplan fahrplan = new Fahrplan();
-		fahrplan.setFahrplanId(Long.valueOf(fahrplanId));
 		fahrplan.setAbfahrtsZeit(abfahrtsZeit);
 		fahrplan.setBuslinieId(Integer.valueOf(buslinie_id));
 		fahrplan.setZielHaltestelle(Integer.valueOf(ziel_haltestelle_id));
-		System.out.println( startHaltestelleName+ buslinieName +abfahrtsZeit +fahrplanId);
+		System.out.println( startHaltestelleName+ buslinieName +abfahrtsZeit);
 		System.out.println(fahrplan);
 		fahrplanRepository.save(fahrplan);
 	}
