@@ -45,7 +45,17 @@ public class BussupervisorService {
 		System.out.println(haltestelle.getHaltestelleName());
 		
 	}
-	public void addNewFahrplan(Fahrplan fahrplan) {
+	public void addNewFahrplan(String startHaltestelleName, String buslinieName, Timestamp abfahrtsZeit, String fahrplanId) {
+		String ziel_haltestelle_id = haltestellenRepository.getIdForName(startHaltestelleName);
+		String buslinie_id = buslinienRepository.getIdForName(buslinieName);
+	
+		Fahrplan fahrplan = new Fahrplan();
+		fahrplan.setFahrplanId(Long.valueOf(fahrplanId));
+		fahrplan.setAbfahrtsZeit(abfahrtsZeit);
+		fahrplan.setBuslinieId(Integer.valueOf(buslinie_id));
+		fahrplan.setZielHaltestelle(Integer.valueOf(ziel_haltestelle_id));
+		System.out.println( startHaltestelleName+ buslinieName +abfahrtsZeit +fahrplanId);
+		System.out.println(fahrplan);
 		fahrplanRepository.save(fahrplan);
 	}
 
@@ -129,19 +139,29 @@ public class BussupervisorService {
 		}
 	}
 
-	public ArrayList<Buslinie> getHaltestellenFromBuslinie(String buslinieName) {
-		return buslinienRepository.getHaltestellenFromBuslinie(buslinieName);
+	public ArrayList<Haltestelle> getHaltestellenFromBuslinie(String buslinieName) {
+		return haltestellenRepository.getHaltestellenFromBuslinie(buslinieName);
 	}
 
-	public String getFahrplanFuerHaltestelle(String haltestelleName, String uhrzeit) {
+	public ArrayList<Fahrplan> getFahrplanFuerHaltestelle(String haltestelleName, String uhrzeit) {
 		Timestamp ts = Timestamp.valueOf(uhrzeit);
 		Timestamp tsWith24Hours = new Timestamp(ts.getTime() + (1000* 60*60*24));
 		System.out.println(ts);
 		System.out.println(tsWith24Hours);
-		return buslinienRepository.getFahrplanFuerHaltestelle(haltestelleName, ts, tsWith24Hours);
+		return fahrplanRepository.getFahrplanFuerHaltestelle(haltestelleName, ts, tsWith24Hours);
 	}
 
-	public void addHaltestelleZuBuslinie(Busfahrt busfahrt) {
+	public void addHaltestelleZuBuslinie(String startHaltestelleName, String zielHaltestelleName, String buslinieName, Timestamp abfahrtsZeit, Timestamp ankunftsZeit ) {
+		System.out.println(startHaltestelleName + zielHaltestelleName + buslinieName + abfahrtsZeit.toString()+ankunftsZeit.toString());
+		String start_haltestelle_id = haltestellenRepository.getIdForName(startHaltestelleName);
+		String ziel_haltestelle_id = haltestellenRepository.getIdForName(zielHaltestelleName);
+		String buslinie_id = buslinienRepository.getIdForName(buslinieName);
+		Busfahrt busfahrt = new Busfahrt();
+		busfahrt.setAbfahrtsZeit(abfahrtsZeit);
+		busfahrt.setAnkunftsZeit(ankunftsZeit);
+		busfahrt.setBuslinieId(Integer.valueOf(buslinie_id));
+		busfahrt.setStartHaltestelle(Integer.valueOf(start_haltestelle_id));
+		busfahrt.setZielHaltestelle(Integer.valueOf(ziel_haltestelle_id));
 		busfahrtRepository.save(busfahrt);
 	}
 
@@ -160,6 +180,18 @@ public class BussupervisorService {
 			System.err.println("Die Haltestelle: " +haltestelleName + " konnte von der Buslinie" +buslinieName+ " nicht gelöscht werden");
 
 		}
+	}
+
+	public ArrayList<Buslinie> getBuslinien() {
+		return buslinienRepository.getBuslinien();
+	}
+
+	public ArrayList<Haltestelle> getHaltestellen() {
+		return haltestellenRepository.getHaltestellen();
+	}
+
+	public ArrayList<Fahrplan> getFahrplaene() {
+		return fahrplanRepository.getFahrplaene();
 	}
 	}
 

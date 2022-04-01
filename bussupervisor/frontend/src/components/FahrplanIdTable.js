@@ -11,7 +11,6 @@ import * as React from 'react';
 
 export default (props) => {
 
-    const columns = props.columns;
     const rows = props.rows;
 
     const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -35,24 +34,18 @@ export default (props) => {
                 <Table sx={{ minWidth: "650px" }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            {
-                                columns.map(column => {
-                                    return <TableCell align="center">{column}</TableCell>
-                                })
-                            }
+                            
+                                    <TableCell align="center">Fahrplan ID</TableCell>
+                            
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
                             rows.map(row => {
                                 return <StyledTableRow key={row.id}>
-                                    {
-                                        Object.entries(row).map(entry => {
-                                            return <TableCell component="td" scope="row" align="center">
-                                                {entry[1]}
+                                            <TableCell component="td" scope="row" align="center">
+                                                {row.fahrplanId}
                                             </TableCell>
-                                        })
-                                    }
                                 </StyledTableRow>
 
                             })

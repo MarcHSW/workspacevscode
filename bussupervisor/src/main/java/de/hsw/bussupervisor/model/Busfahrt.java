@@ -1,5 +1,6 @@
 package de.hsw.bussupervisor.model;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -54,4 +55,20 @@ public class Busfahrt {
     public Timestamp getAnkunftsZeit(){
         return ANKUNFTS_ZEIT;
     }
+    public void setBuslinieId(int buslinie_id) {
+        this.buslinie_id = buslinie_id;
+    }
+    public void setAbfahrtsZeit(Timestamp abfahrtsZeit) {
+        this.ABFAHRTS_ZEIT = abfahrtsZeit;
+    }
+    public void setStartHaltestelle (int start_Haltestelle_Id){
+        this.start_Haltestelle_Id = start_Haltestelle_Id;
+    }
+    public void setZielHaltestelle (int ziel_Haltestelle_Id){
+        this.ziel_Haltestelle_Id = ziel_Haltestelle_Id;
+    }
+    public void setAnkunftsZeit(Timestamp ankunftsZeit) {
+        this.ANKUNFTS_ZEIT = ankunftsZeit;
+    }
+
 }

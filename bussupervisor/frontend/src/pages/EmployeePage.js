@@ -1,31 +1,27 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { AppBar, Box, Button, Toolbar, Input } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import BasicTable from "../components/BasicTable";
+import BuslinienTable from "../components/BuslinienTable";
 import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
+import HaltestellenTable from "../components/HaltestellenTable";
+import FahrplanTable from "../components/FahrplanTable";
+import FahrplanIdTable from "../components/FahrplanIdTable";
 
 export default () => {
   const navigate = useNavigate();
 
-  const [buslinien, setBuslinien] = useState([
-    { name: "370", haltestellen: ["sehnde", "rethmar"] },
-    { name: "800", haltestellen: ["sehnde", "rethmar"] },
-  ]);
-
-  const [haltestellen, setHaltestellen] = useState([
-    { name: "370", buslinien: ["sehnde", "rethmar"] },
-  ]);
+  const [success, setSuccess] = useState(true);
 
   const [buslinienNameRef, setbuslinienNameRef] = useState();
   const [haltestellenNameRef, sethaltestellenNameRef] = useState();
   const [
-    haltestelleZuBuslinieHaltestelleRef,
-    sethaltestelleZuBuslinieHaltestelleRef,
+    deleteHaltestelleFromBuslinieHaltestelleRef,
+    setDeleteHaltestelleFromBuslinieHaltestelleRef,
   ] = useState();
   const [
-    haltestelleZuBuslinieBuslinieRef,
-    sethaltestelleZuBuslinieBuslinieRef,
+    deleteHaltestelleFromBuslinieBuslinieRef,
+    setDeleteHaltestelleFromBuslinieBuslinieRef,
   ] = useState();
   const [newNameRefHaltestelle, setnewNameRefHaltestelle] = useState();
   const [oldNameRefBuslinie, setoldNameRefBuslinie] = useState();
@@ -38,6 +34,9 @@ export default () => {
     buslinieIntoFahrplanEndhaltestelle,
     setbuslinieIntoFahrplanEndhaltestelle,
   ] = useState();
+  const [buslinieIntoFahrplanFahrplan, setbuslinieIntoFahrplanFahrplan] =
+    useState();
+  const [tableData, setTableData] = useState([]);
   const [fahrplanDeleteRef, setfahrplanDeleteRef] = useState();
   const [buslinieDeleteRef, setbuslinieDeleteRef] = useState();
   const [haltestelleDeleteRef, sethaltestelleDeleteRef] = useState();
@@ -46,116 +45,240 @@ export default () => {
     addHaltestelleStartHaltestelleRef,
     setaddHaltestelleStartHaltestelleRef,
   ] = useState();
-  const [addHaltestelleFahrzeitRef, setaddHaltestelleFahrzeitRef] = useState();
+  const [addHaltestelleAnkunftszeitRef, setaddHaltestelleAnkunftszeitRef] =
+    useState();
+  const [addHaltestelleAbfahrtszeitRef, setaddHaltestelleAbfahrtszeitRef] =
+    useState();
   const [
     addHaltestelleNextHaltestelleRef,
     setaddHaltestelleNextHaltestelleRef,
   ] = useState();
 
+  const [showBuslinienTable, setShowBuslinienTable] = useState(false);
+  const [showHaltestellenTable, setShowHaltestelleTable] = useState(false);
+  const [showFahrplanTable, setShowFahrplanTable] = useState(false);
 
   //Buslinien hinzufügen
   function handleAddBuslinie() {
+    setSuccess(false);
     axios({
-      method: 'post',
-      url: 'http://localhost:8080/bussupervisor/addBuslinie',
+      method: "post",
+      url: "http://localhost:8080/bussupervisor/addBuslinie",
       data: {
-        "name": buslinienNameRef
+        name: buslinienNameRef,
+      },
+    }).then((response) => {
+      if (response.status < 300) {
+        setSuccess(true);
       }
-    })
+    });
   }
 
   //Haltestellen hinzufügen
   function handleAddHaltestelle() {
+    setSuccess(false);
     axios({
-      method: 'post',
-      url: 'http://localhost:8080/bussupervisor/addHaltestelle',
+      method: "post",
+      url: "http://localhost:8080/bussupervisor/addHaltestelle",
       data: {
-        "name": haltestellenNameRef
+        name: haltestellenNameRef,
+      },
+    }).then((response) => {
+      if (response.status < 300) {
+        setSuccess(true);
       }
-    })
+    });
   }
 
-//ToDo:
-  const handleAddHaltestelleToBuslinie = () => {
-    
+  //Haltestelle von Buslinie löschen
+  const handleDeleteHaltestelleFromBuslinie = () => {
+    setSuccess(false);
     axios({
-      method: 'put',
-      url: 'http://localhost:8080/bussupervisor/addHaltestelleZuBuslinie/'+ haltestelleZuBuslinieHaltestelleRef + "?updatedName=" + haltestelleZuBuslinieBuslinieRef,
-    })
-  };
-
-
-  const handleChangeHaltestelleName = () => {
-    
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/bussupervisor/addHaltestelleZuBuslinie',
-      data: {
-        "name": haltestelleZuBuslinieHaltestelleRef,
-        "buslinieId": 0,
-        "ankunftsZeit": "2022-03-31T17:51:18.992Z",
-        "busfahrtId": 0,
-        "abfahrtsZeit": "2022-03-31T17:51:18.992Z"
+      method: "delete",
+      url:
+        "http://localhost:8080/bussupervisor/deleteHaltestelleFromBuslinie/" +
+        deleteHaltestelleFromBuslinieHaltestelleRef +
+        "/" +
+        deleteHaltestelleFromBuslinieBuslinieRef,
+    }).then((response) => {
+      if (response.status < 300) {
+        setSuccess(true);
       }
-    })
+    });
   };
 
+  //Ändert einen Haltestellen Namen
+  const handleChangeHaltestelleName = () => {
+    setSuccess(false);
+    axios({
+      method: "put",
+      url:
+        "http://localhost:8080/bussupervisor/changeHaltestelleName/" +
+        oldNameRefHaltestelle +
+        "?updatedName=" +
+        newNameRefHaltestelle,
+    }).then((response) => {
+      if (response.status < 300) {
+        setSuccess(true);
+      }
+    });
+  };
 
+  //Ändert einen Buslinien Namen
   const handleChangeBuslinieName = () => {
+    setSuccess(false);
     axios({
-      method: 'put',
-      url: 'http://localhost:8080/bussupervisor/changeBuslinieName/'+ oldNameRefBuslinie + "?updatedName=" + newNameRefBuslinie,
-    })
+      method: "put",
+      url:
+        "http://localhost:8080/bussupervisor/changeBuslinieName/" +
+        oldNameRefBuslinie +
+        "?updatedName=" +
+        newNameRefBuslinie,
+    }).then((response) => {
+      if (response.status < 300) {
+        setSuccess(true);
+      }
+    });
   };
 
-
+  //Fügt Fahrplan zu Buslinie hinzu
   const handleAddBuslinieIntoFahrplan = () => {
+    setSuccess(false);
     axios({
-    method: 'post',
-    url: 'http://localhost:8080/bussupervisor/addFahrplan',
-    data: {
-      "name": haltestelleZuBuslinieHaltestelleRef,
-      "buslinieId": 0,
-      "ankunftsZeit": "2022-03-31T17:51:18.992Z",
-      "busfahrtId": 0,
-      "abfahrtsZeit": "2022-03-31T17:51:18.992Z"
-    }
-  })
+      method: "post",
+      url:
+        "http://localhost:8080/bussupervisor/addFahrplan/" +
+        buslinieIntoFahrplanEndhaltestelle +
+        "/" +
+        buslinieIntoFahrplanBuslinie +
+        "/" +
+        buslinieIntoFahrplanTime +
+        "/" +
+        buslinieIntoFahrplanFahrplan,
+    }).then((response) => {
+      if (response.status < 300) {
+        setSuccess(true);
+      }
+    });
   };
 
-
+  //Löscht einen Fahrplan
   const handleDeleteFahrplan = () => {
-    axios.delete(
-      "http://localhost:8080/bussupervisor/deleteFahrplan/" + fahrplanDeleteRef
-    );
+    setSuccess(false);
+    axios
+      .delete(
+        "http://localhost:8080/bussupervisor/deleteFahrplan/" +
+          fahrplanDeleteRef
+      )
+      .then((response) => {
+        if (response.status < 300) {
+          setSuccess(true);
+        }
+      });
   };
 
-
+  //Löscht eine Buslinie
   const handleDeleteBuslinie = () => {
-     axios.delete(
-       "http://localhost:8080/bussupervisor/deleteBuslinie/" + buslinieDeleteRef
-     );
+    setSuccess(false);
+    axios
+      .delete(
+        "http://localhost:8080/bussupervisor/deleteBuslinie/" +
+          buslinieDeleteRef
+      )
+      .then((response) => {
+        if (response.status < 300) {
+          setSuccess(true);
+        }
+      });
   };
 
-
+  //Löscht eine Haltestelle
   const handleDeleteHaltestelle = () => {
-    axios.delete(
-      "http://localhost:8080/bussupervisor/deleteHaltestelle/" +
-        haltestelleDeleteRef
-    );
+    setSuccess(false);
+    axios
+      .delete(
+        "http://localhost:8080/bussupervisor/deleteHaltestelle/" +
+          haltestelleDeleteRef
+      )
+      .then((response) => {
+        if (response.status < 300) {
+          setSuccess(true);
+        }
+      });
   };
 
-
-  const handleaddHaltestelleTo = () => {
-
+  //Fügt eine Haltestelle zu einer Buslinie hinzu
+  const handleaddHaltestelleToBuslinie = () => {
+    setSuccess(false);
+    axios({
+      method: "post",
+      url:
+        "http://localhost:8080/bussupervisor/addHaltestelleZuBuslinie/" +
+        addHaltestelleStartHaltestelleRef +
+        "/" +
+        addHaltestelleNextHaltestelleRef +
+        "/" +
+        addHaltestelleBuslinieRef +
+        "/" +
+        addHaltestelleAbfahrtszeitRef +
+        "/" +
+        addHaltestelleAnkunftszeitRef,
+    }).then((response) => {
+      if (response.status < 300) {
+        setSuccess(true);
+      }
+    });
   };
 
-  const columns = ["Id", "Buslinienname"];
-  const rows = [
-    { id: "6", name: "S6" },
-    { id: "7", name: "S7" },
-    { id: "2", name: "S2" },
-  ];
+  //Zeigt alle Haltestellen
+  const handleShowAllHaltestellen = () => {
+    setShowBuslinienTable(false);
+    setShowFahrplanTable(false);
+    setSuccess(false);
+    axios({
+      method: "get",
+      url: "http://localhost:8080/bussupervisor/getHaltestellen",
+    }).then((response) => {
+      setTableData(response.data);
+      setShowHaltestelleTable(true);
+      if (response.status < 300) {
+        setSuccess(true);
+      }
+    });
+  };
+  //Zeigt alle Fahrpläne
+  const handleShowAllFahrplaene = () => {
+    setShowBuslinienTable(false);
+    setShowHaltestelleTable(false);
+    setSuccess(false);
+    axios({
+      method: "get",
+      url: "http://localhost:8080/bussupervisor/getFahrplaene",
+    }).then((response) => {
+      setTableData(response.data);
+      setShowFahrplanTable(true);
+      if (response.status < 300) {
+        setSuccess(true);
+      }
+    });
+  };
+
+  //Zeigt alle Buslinien
+  const handleShowAllBuslinien = () => {
+    setShowFahrplanTable(false);
+    setShowFahrplanTable(false);
+    setSuccess(false);
+    axios({
+      method: "get",
+      url: "http://localhost:8080/bussupervisor/getBuslinien",
+    }).then((response) => {
+      setTableData(response.data);
+      setShowBuslinienTable(true);
+      if (response.status < 300) {
+        setSuccess(true);
+      }
+    });
+  };
 
   return (
     <>
@@ -177,10 +300,18 @@ export default () => {
       </Box>
       <div>
         <div>
+          <h3>
+            Die letzte Aktion war: {success && "Erfolgreich"}
+            {!success &&
+              "Nicht Erfolgreich, bitte überprüfen Sie Ihre Eingaben"}
+          </h3>
+        </div>
+        <div>
           <h3>Dinge anlegen</h3>
           <Input
             onChange={(e) => setbuslinienNameRef(e.target.value)}
             type="text"
+            placeholder={"Buslinienname"}
           />
           <Button variant="contained" onClick={handleAddBuslinie}>
             Buslinie anlegen
@@ -188,35 +319,24 @@ export default () => {
           <Input
             onChange={(e) => sethaltestellenNameRef(e.target.value)}
             type="text"
+            placeholder={"Haltestellenname"}
           />
           <Button variant="contained" onClick={handleAddHaltestelle}>
             Haltestelle anlegen
           </Button>
         </div>
         <h3>Dinge zu Dingen hinzufügen</h3>
-        <Input
-          onChange={(e) =>
-            sethaltestelleZuBuslinieHaltestelleRef(e.target.value)
-          }
-          type="text"
-        />{" "}
-        zu
-        <Input
-          onChange={(e) => sethaltestelleZuBuslinieBuslinieRef(e.target.value)}
-          type="text"
-        />
-        <Button variant="contained" onClick={handleAddHaltestelleToBuslinie}>
-          Haltestelle zu Buslinie hinzufügen
-        </Button>
         <div>
           <Input
             onChange={(e) => setoldNameRefHaltestelle(e.target.value)}
             type="text"
+            placeholder={"Alter Haltestellenname"}
           />{" "}
           zu
           <Input
             onChange={(e) => setnewNameRefHaltestelle(e.target.value)}
             type="text"
+            placeholder={"Neuer Haltestellenname"}
           />
           <Button variant="contained" onClick={handleChangeHaltestelleName}>
             Haltestelle umbenennen
@@ -225,11 +345,13 @@ export default () => {
         <Input
           onChange={(e) => setoldNameRefBuslinie(e.target.value)}
           type="text"
+          placeholder={"Alter Buslinienname"}
         />{" "}
         zu
         <Input
           onChange={(e) => setnewNameRefBuslinie(e.target.value)}
           type="text"
+          placeholder={"Neuer Buslinienname"}
         />
         <Button variant="contained" onClick={handleChangeBuslinieName}>
           Buslinie umbenennen
@@ -239,11 +361,13 @@ export default () => {
           <Input
             onChange={(e) => setbuslinieIntoFahrplanBuslinie(e.target.value)}
             type="text"
+            placeholder={"Buslinienname"}
           />
           startet um
           <Input
             onChange={(e) => setbuslinieIntoFahrplanTime(e.target.value)}
             type="text"
+            placeholder={"jjjj-mm-dd hh:mm:ss"}
           />
           Uhr in Richtung Endhaltestelle
           <Input
@@ -251,6 +375,13 @@ export default () => {
               setbuslinieIntoFahrplanEndhaltestelle(e.target.value)
             }
             type="text"
+            placeholder={"Haltestellenname"}
+          />
+          im Fahrplan
+          <Input
+            onChange={(e) => setbuslinieIntoFahrplanFahrplan(e.target.value)}
+            type="text"
+            placeholder={"FahrplanId"}
           />
           <Button variant="contained" onClick={handleAddBuslinieIntoFahrplan}>
             Buslinie zu Fahrplan hinzufügen
@@ -258,8 +389,30 @@ export default () => {
         </div>
         <h3>Dinge löschen</h3>
         <Input
+          onChange={(e) =>
+            setDeleteHaltestelleFromBuslinieHaltestelleRef(e.target.value)
+          }
+          type="text"
+          placeholder={"Haltestellenname"}
+        />{" "}
+        aus
+        <Input
+          onChange={(e) =>
+            setDeleteHaltestelleFromBuslinieBuslinieRef(e.target.value)
+          }
+          type="text"
+          placeholder={"Buslinienname"}
+        />
+        <Button
+          variant="contained"
+          onClick={handleDeleteHaltestelleFromBuslinie}
+        >
+          Haltestelle aus Buslinie löschen
+        </Button>
+        <Input
           onChange={(e) => setfahrplanDeleteRef(e.target.value)}
           type="text"
+          placeholder={"Fahrplanname"}
         />
         <Button variant="contained" onClick={handleDeleteFahrplan}>
           Fahrplan löschen
@@ -267,6 +420,7 @@ export default () => {
         <Input
           onChange={(e) => setbuslinieDeleteRef(e.target.value)}
           type="text"
+          placeholder={"Buslinienname"}
         />
         <Button variant="contained" onClick={handleDeleteBuslinie}>
           Buslinie löschen
@@ -274,6 +428,7 @@ export default () => {
         <Input
           onChange={(e) => sethaltestelleDeleteRef(e.target.value)}
           type="text"
+          placeholder={"Haltestellenname"}
         />
         <Button variant="contained" onClick={handleDeleteHaltestelle}>
           Haltestelle löschen
@@ -285,27 +440,53 @@ export default () => {
         <Input
           onChange={(e) => setaddHaltestelleStartHaltestelleRef(e.target.value)}
           type="text"
+          placeholder={"Haltestellenname"}
         />
         Buslinie:
         <Input
           onChange={(e) => setaddHaltestelleBuslinieRef(e.target.value)}
           type="text"
+          placeholder={"Buslinienname"}
         />
-        Fahrzeit bis zur nächsten Haltestelle:
+        Abfahrtszeit:
         <Input
-          onChange={(e) => setaddHaltestelleFahrzeitRef(e.target.value)}
+          onChange={(e) => setaddHaltestelleAbfahrtszeitRef(e.target.value)}
           type="text"
+          placeholder={"jjjj-mm-dd hh:mm:ss"}
         />
         nächste Haltestelle:
         <Input
           onChange={(e) => setaddHaltestelleNextHaltestelleRef(e.target.value)}
           type="text"
+          placeholder={"Haltestellenname"}
         />
-        <Button variant="contained" onClick={handleaddHaltestelleTo}>
-          hinzufügen
-        </Button>
+        Ankunftszeit:
+        <Input
+          onChange={(e) => setaddHaltestelleAnkunftszeitRef(e.target.value)}
+          type="text"
+          placeholder={"jjjj-mm-dd hh:mm:ss"}
+        />
+        <div>
+          <Button variant="contained" onClick={handleaddHaltestelleToBuslinie}>
+            hinzufügen
+          </Button>
+          <h3>Daten anzeigen lassen</h3>
+          <Button variant="contained" onClick={handleShowAllHaltestellen}>
+            Haltestellen anzeigen
+          </Button>
+          <Button variant="contained" onClick={handleShowAllBuslinien}>
+            Buslinien anzeigen
+          </Button>
+          <Button variant="contained" onClick={handleShowAllFahrplaene}>
+            Fahrpläne anzeigen
+          </Button>
+        </div>
       </div>
-      <BasicTable columns={columns} rows={rows} />
+      <div>
+        {showBuslinienTable && <BuslinienTable rows={tableData} />}
+        {showHaltestellenTable && <HaltestellenTable rows={tableData} />}
+        {showFahrplanTable && <FahrplanIdTable rows={tableData} />}
+      </div>
     </>
   );
 };
